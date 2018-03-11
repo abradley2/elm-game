@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Bomberman</title>
+    </head>
+    <body>
+      <style>
+        body { padding: 0; margin: 0; }
+        canvas { background: white; display: block; margin: 0 auto; }
+      </style>
+      <div id='app'></div>
+      <canvas id="myCanvas" width="480" height="320"></canvas>
+      <script src="/bundle.js"></script>
+      <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        
+        const width = parseInt(canvas.getAttribute('width'), 10)
+        const height = parseInt(canvas.getAttribute('height'), 10)
+        
+        window.Elm.Main.embed(
+          document.getElementById('app'),
+          {
+            width: width,
+            height: height
+          }
+        )
+      </script>
+    </body>
+</html>
