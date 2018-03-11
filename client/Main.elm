@@ -4,13 +4,15 @@ import AnimationFrame
 import Html exposing (Html, div)
 import Keyboard
 import Time
-import Array
 import Model exposing (getInitialModel)
-import Types exposing (GameMode(..))
+import Types exposing (GameMode(..), EntityType(..))
+import Render exposing (draw)
 import Model exposing (Model)
 import Message exposing (Cmds, Msg, Msg(..))
 import Ports exposing (updateEntity, clear)
-import Update.Controls exposing (updateControls)
+import Entities.Util exposing (getEntitiesByType)
+import Update.GameState exposing (updateGameState)
+import Update.Player exposing (updatePlayer)
 
 
 init flags =
@@ -36,41 +38,18 @@ update message model =
         ( resultModel, resultCommands ) =
             ( model, [] )
                 |> createReducer message
-                    (\model -> model.controls)
-                    (\model controls -> { model | controls = controls })
-                    updateControls
+                    (\model -> model.gameState)
+                    (\model gameState -> { model | gameState = gameState })
+                    updateGameState
+                |> createReducer message
+                    (\model -> ( model.gameState, model.entities ))
+                    (\model entities -> { model | entities = entities })
+                    updatePlayer
     in
         case message of
             Animate _ ->
                 ( resultModel
-                , Cmd.batch
-                    ((clear "clear")
-                        :: (resultModel.entities
-                                |> Array.filter (\entity -> entity.active)
-                                |> Array.foldr
-                                    (\entity sprites ->
-                                        let
-                                            indexedSprite =
-                                                if (not entity.active) then
-                                                    Nothing
-                                                else
-                                                    Array.get entity.activeSprite entity.sprites
-                                        in
-                                            case indexedSprite of
-                                                Just sprite ->
-                                                    Array.push ( entity.spriteSheet, sprite ) sprites
-
-                                                Nothing ->
-                                                    sprites
-                                    )
-                                    Array.empty
-                                |> Array.toList
-                                |> List.map
-                                    (\( spriteSheet, s ) ->
-                                        updateEntity ( spriteSheet, s.xSrc, s.ySrc, s.width, s.height, s.xPos, s.yPos )
-                                    )
-                           )
-                    )
+                , Cmd.batch (draw resultModel.entities)
                 )
 
             _ ->
@@ -95,6 +74,7 @@ main =
                             [ AnimationFrame.diffs Animate
                             , Keyboard.downs (KeyChange True)
                             , Keyboard.ups (KeyChange False)
+                            , Time.every 17 Tick
                             ]
 
                     Paused ->

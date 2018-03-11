@@ -1,9 +1,8 @@
 module Model exposing (getInitialModel, Model)
 
 import Types exposing (Flags, Entity, EntityType, EntityType(..), GameState, GameMode(..))
-import Update.Controls
 import Array
-import Sprites.Link exposing (link)
+import Entities.Link exposing (link)
 
 
 entities : Array.Array Entity
@@ -14,17 +13,22 @@ entities =
 
 
 type alias Model =
-    { controls : Update.Controls.ControlsModel
-    , entities : Array.Array Entity
+    { entities : Array.Array Entity
     , gameState : GameState
     }
 
 
 getInitialModel : Flags -> Model
 getInitialModel flags =
-    { controls = Update.Controls.initialState
-    , entities = entities
+    { entities = entities
     , gameState =
         { mode = Playing
+        , lastFrame = 0
+        , controls =
+            { up = False
+            , right = False
+            , down = False
+            , left = False
+            }
         }
     }

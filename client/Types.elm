@@ -16,16 +16,18 @@ type GameMode
 
 type alias GameState =
     { mode : GameMode
-    }
-
-
-type alias PlayerAttrs =
-    { name : String
+    , lastFrame : Float
+    , controls :
+        { up : Bool
+        , right : Bool
+        , down : Bool
+        , left : Bool
+        }
     }
 
 
 type EntityType
-    = Player PlayerAttrs
+    = Player { name : String }
     | Bomb
 
 
@@ -34,8 +36,6 @@ type alias Sprite =
     , ySrc : Int
     , width : Int
     , height : Int
-    , xPos : Int
-    , yPos : Int
     }
 
 
@@ -49,4 +49,10 @@ type alias Entity =
     , activeSprite : Int
     , entityType : EntityType
     , active : Bool
+    , xPos : Int
+    , yPos : Int
     }
+
+
+type alias Entities =
+    Array.Array Entity

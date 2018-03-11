@@ -10,5 +10,6 @@ type alias Cmds =
 
 type Msg
     = NoOp
+    | Tick Time.Time
     | Animate Time.Time
     | KeyChange Bool Keyboard.KeyCode

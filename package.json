@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "elm-make ./client/Main.elm --yes --output ./bundle.js && uglifyjs ./bundle.js -o ./bundle.js",
-    "start": "elm-live ./client/Main.elm --debug --dir=./ --output ./bundle.js"
+    "start": "elm-live ./client/Main.elm --dir=./ --output ./bundle.js"
   },
   "author": "",
   "license": "ISC",
