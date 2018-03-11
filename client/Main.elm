@@ -4,7 +4,6 @@ import AnimationFrame
 import Html exposing (Html, div)
 import Keyboard
 import Time
-import Data exposing (entities)
 import Model exposing (getInitialModel)
 import Update exposing (update)
 import Data exposing (GameState(..))
@@ -42,7 +41,4 @@ main =
                             [ Keyboard.downs (KeyChange True)
                             , Keyboard.ups (KeyChange False)
                             ]
-
-                    _ ->
-                        Sub.none
         }
