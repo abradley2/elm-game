@@ -17,16 +17,39 @@
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
         
-        const width = parseInt(canvas.getAttribute('width'), 10)
-        const height = parseInt(canvas.getAttribute('height'), 10)
-        
-        window.Elm.Main.embed(
+        const app = window.Elm.Main.embed(
           document.getElementById('app'),
           {
-            width: width,
-            height: height
+            width: parseInt(canvas.getAttribute('width'), 10),
+            height: parseInt(canvas.getAttribute('height'), 10)
           }
         )
+        
+        const images = {}
+        
+        app.ports.updateEntity.subscribe(function (args) {
+            const [
+                spriteSheet,
+                xSrc,
+                ySrc,
+                width,
+                height,
+                xPos,
+                yPos
+            ] = args
+            
+            if (!images[spriteSheet]) {
+                images[spriteSheet] = new Image()
+                images[spriteSheet].src = spriteSheet
+            }
+
+            // context.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh)
+            ctx.drawImage(images[spriteSheet], xSrc, ySrc, width, height, xPos, yPos, width, height)
+        })
+        
+        app.ports.clear.subscribe(function () {
+
+        })
       </script>
     </body>
 </html>

@@ -1,7 +1,9 @@
 port module Ports exposing (..)
 
+import Types exposing (Entity)
 
-port clear : (String -> message) -> Sub message
+
+port clear : String -> Cmd message
 
 
-port updateEntity : (( String, Int, Int ) -> message) -> Sub message
+port updateEntity : ( String, Int, Int, Int, Int, Int, Int ) -> Cmd message

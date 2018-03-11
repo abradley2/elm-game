@@ -1,27 +1,15 @@
-module Model exposing (getInitialModel)
+module Model exposing (getInitialModel, Model)
 
-import Data exposing (Flags, Entity, EntityType, EntityType(..), GameState, GameState(..))
+import Types exposing (Flags, Entity, EntityType, EntityType(..), GameState, GameMode(..))
 import Update.Controls
 import Array
-
-
-getBaseEntity spriteStr typeArgs =
-    { sprite = spriteStr
-    , x = 0
-    , y = 0
-    , width = 40
-    , height = 40
-    , entityType = typeArgs
-    , active = False
-    }
+import Sprites.Link exposing (link)
 
 
 entities : Array.Array Entity
 entities =
     Array.fromList
-        [ (getBaseEntity "somesprite.png" (Player { name = "Tony" }))
-        , (getBaseEntity "somesprite.png" Bomb)
-        , (getBaseEntity "somesprite.png" Bomb)
+        [ link
         ]
 
 
@@ -36,5 +24,7 @@ getInitialModel : Flags -> Model
 getInitialModel flags =
     { controls = Update.Controls.initialState
     , entities = entities
-    , gameState = Playing
+    , gameState =
+        { mode = Playing
+        }
     }
