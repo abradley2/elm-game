@@ -9,7 +9,7 @@
     "start": "elm-live ./client/Main.elm --dir=./ --output ./bundle.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "WTFPL",
   "devDependencies": {
     "uglify-js": "^3.3.14"
   }
