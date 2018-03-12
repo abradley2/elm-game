@@ -1,19 +1,23 @@
 module Model exposing (getInitialModel, Model)
 
-import Types exposing (Flags, Entity, EntityType, EntityType(..), GameState, GameMode(..))
+import Types exposing (Flags, Entities, Entity, EntityType, EntityType(..), GameState, GameMode(..))
 import Array
 import Entities.Link exposing (link)
+import Entities.Octorock exposing (getOctorock)
 
 
-entities : Array.Array Entity
+entities : Entities
 entities =
-    Array.fromList
-        [ link
-        ]
+    [ link
+    , getOctorock ( 200, 200 )
+    , getOctorock ( 300, 300 )
+    , getOctorock ( 350, 300 )
+    , getOctorock ( 100, 120 )
+    ]
 
 
 type alias Model =
-    { entities : Array.Array Entity
+    { entities : Entities
     , gameState : GameState
     }
 

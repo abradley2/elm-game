@@ -7,8 +7,8 @@ import Ports exposing (clear, updateEntity)
 draw entities =
     ((clear "clear")
         :: (entities
-                |> Array.filter (\entity -> entity.active)
-                |> Array.foldr
+                |> List.filter (\entity -> entity.active)
+                |> List.foldr
                     (\entity sprites ->
                         let
                             indexedSprite =
@@ -19,13 +19,12 @@ draw entities =
                         in
                             case indexedSprite of
                                 Just sprite ->
-                                    Array.push ( entity, sprite ) sprites
+                                    ( entity, sprite ) :: sprites
 
                                 Nothing ->
                                     sprites
                     )
-                    Array.empty
-                |> Array.toList
+                    []
                 |> List.map
                     (\( e, s ) ->
                         updateEntity ( e.spriteSheet, s.xSrc, s.ySrc, s.width, s.height, e.xPos, e.yPos )

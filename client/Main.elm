@@ -10,9 +10,9 @@ import Render exposing (draw)
 import Model exposing (Model)
 import Message exposing (Cmds, Msg, Msg(..))
 import Ports exposing (updateEntity, clear)
-import Entities.Util exposing (getEntitiesByType)
 import Update.GameState exposing (updateGameState)
 import Update.Player exposing (updatePlayer)
+import Update.Octorock exposing (updateOctorock)
 
 
 init flags =
@@ -41,12 +41,25 @@ update message model =
                     (\model -> model.gameState)
                     (\model gameState -> { model | gameState = gameState })
                     updateGameState
-                |> createReducer message
-                    (\model -> ( model.gameState, model.entities ))
-                    (\model entities -> { model | entities = entities })
-                    updatePlayer
     in
         case message of
+            Tick _ ->
+                ( { resultModel
+                    | entities =
+                        List.map
+                            (\entity ->
+                                case entity.entityType of
+                                    Player _ ->
+                                        updatePlayer resultModel.gameState entity
+
+                                    Octorock _ ->
+                                        updateOctorock resultModel.gameState entity
+                            )
+                            resultModel.entities
+                  }
+                , Cmd.batch resultCommands
+                )
+
             Animate _ ->
                 ( resultModel
                 , Cmd.batch (draw resultModel.entities)

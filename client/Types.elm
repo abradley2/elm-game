@@ -28,7 +28,7 @@ type alias GameState =
 
 type EntityType
     = Player { name : String }
-    | Bomb
+    | Octorock { health : Int }
 
 
 type alias Sprite =
@@ -55,4 +55,4 @@ type alias Entity =
 
 
 type alias Entities =
-    Array.Array Entity
+    List Entity
